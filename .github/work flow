@@ -1,0 +1,39 @@
+name: YouTube Automation
+
+on:
+  schedule:
+    - cron: '30 12 * * *'   # 6:00 PM IST
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download code
+      uses: actions/checkout@v4
+
+    - name: Python setup
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install FFmpeg
+      run: |
+        sudo apt update
+        sudo apt install -y ffmpeg
+
+    - name: Install Python packages
+      run: |
+        pip install edge-tts moviepy pillow google-api-python-client google-auth google-auth-oauthlib
+
+    - name: Make video
+      run: python video.py
+
+    - name: Make thumbnail
+      run: python thumbnail.py
+
+    - name: Upload video
+      env:
+        YT_SECRET: ${{ secrets.YT_SECRET }}
+      run: python upload.py
