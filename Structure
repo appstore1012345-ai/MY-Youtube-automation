@@ -1,0 +1,10 @@
+youtube-automation/
+│
+├── script.txt
+├── video.py
+├── thumbnail.py
+├── upload.py
+│
+└── .github/
+    └── workflows/
+        └── youtube.yml
